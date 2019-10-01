@@ -420,9 +420,11 @@ double flep_eval(const struct FLEP* f, double* val) {
 
 /* ... */
 void flep_free(const struct FLEP* f) {
-  free(f->text);
-  free(f->data);
-  free((void*)f);
+  if (f) {
+    free(f->text);
+    free(f->data);
+    free((void*)f);
+  }
 }
 
 /* published pretty printer for compiled expression */

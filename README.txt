@@ -61,6 +61,7 @@ bugs. The following example is the PROPER USAGE, including error checking.
   if (!f) { // failed to parse
     printf("Failed to parse at position %d (%s)\n",
       position, flep_translate(error));
+    exit(1); // deal with failure somehow
   }
   double abc[3] = {1.0, 2.0, 3.0};
   double x = flep_eval(f, abc);

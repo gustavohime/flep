@@ -20,7 +20,7 @@ runs it on a stack-based engine. FLEP's code is:
 
 There are several other C/C++ libraries you might want to check out.
 The 
-[C++ Mathematical Expression Parser Benchmark](https://github.com/ArashPartow/math-parser-benchmark-project]) provides a quite thorough comparison, and
+[C++ Mathematical Expression Parser Benchmark](https://github.com/ArashPartow/math-parser-benchmark-project) provides a quite thorough comparison, and
 depending on your priorities and constraints there might be more suitable
 alternatives. At the time of this writing, FLEP passes the benchmark suite
 with flying colors for correctness and speed, given its minimalistic 

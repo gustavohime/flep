@@ -27,6 +27,10 @@
 #include "flep.h"
 
 #define N_BUILT_IN 27
+/* These expressions were obtained from the lists provided in 
+ * Arash Parkow's Mathematical Expression Parser Benchmark.
+ * http://https://github.com/ArashPartow/math-parser-benchmark-project
+ */
 const char* built_in[] = {
   "sin(2.2 * a) + cos(pi / b)",
   "1 - sin(2.2 * a) + cos(pi / b)",

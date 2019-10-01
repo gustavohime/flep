@@ -59,3 +59,9 @@ bugs. The following example is the PROPER USAGE, including error checking.
   flep_free(f);
 ```
 
+## Compiling and running the example
+
+The compilation is rather trivial, you need 'gcc' and 'make. Just run 'make'.
+You can then run 'example' without any arguments for a simplistic benchmark.
+Alternatively, you can run 'example [input.file]' to parse a list of expressions
+of your choice. A sample input file is provided - containing the same expressions hardcoded in example.c.

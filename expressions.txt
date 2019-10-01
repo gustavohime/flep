@@ -1,0 +1,42 @@
+# These expressions were obtained from the lists provided in 
+# Arash Parkow's Mathematical Expression Parser Benchmark.
+
+# http://https://github.com/ArashPartow/math-parser-benchmark-project
+
+# The files provided in that project can be used here as well. 
+# But CAUTION:
+# The text program provided with FLEP provides only values of "a" and "b".
+# If you would like to test expressions with more than 2 (up to 7) variables,
+# you must edit example.c accordingly.
+
+# The syntax of this file is as follows:
+#  - Blank line and lines starting with '#' are ignored.
+#  - Otherwise lines are expected to contain one expression each.
+sin(2.2 * a) + cos(pi / b)
+1 - sin(2.2 * a) + cos(pi / b)
+sqrt(3 + sin(2.2 * a) + cos(pi / b) / 3.3)
+(a^2 / sin(2 * pi / b)) -a / 2.2
+1-(a/b*0.5)
+e^log(7*a)
+10^log(3+b)
+(cos(2.41)/b)
+-(sin(pi+a)+1)
+a-(e^(log(7+b)))
+(1.123*sin(a)+2.1234)/3.1237
+(1.123*cos(a)-3.1235)/3.1238
+(1.123*tan(a)+2.1236)/3.1239
+(b+a/b) * (a-b/a)
+a/((a+b)*(a-b))/b
+1.1-((a*b)+(a/b))-3.3
+a+b
+(a+b)*3.3
+(2*a+2*a)
+2*(2*a)
+(2*a)*2
+-(b^1.1)
+a+b*(a+b)
+(1.1+b)*(-3.3)
+a+b-e*pi/5^6
+a^b/e*pi-5+6
+2.2*(a+b)
+

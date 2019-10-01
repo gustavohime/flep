@@ -8,6 +8,7 @@ README.md  - Same text formatted for Github.
 LICENSE    - The Gnu Public Licence, version 3
 example.c  - A comprehensive example and test.
 makefile   - Builds the example program
+expressions.txt - Sample input file for example program.
 
 Otherwise, please download the full/latest version from the link below:
 
@@ -65,3 +66,9 @@ bugs. The following example is the PROPER USAGE, including error checking.
   double x = flep_eval(f, abc);
   flep_free(f);
 
+*********************************
+Compiling and running the example:
+*********************************
+
+The compilation is rather trivial, you need 'gcc' and 'make. Just run 'make'.
+You can then run 'example' without any arguments for a simplistic benchmark.  Alternatively, you can run 'example [input.file]' to parse a list of expressions of your choice. A sample input file is provided - containing the same expressions hardcoded in example.c.

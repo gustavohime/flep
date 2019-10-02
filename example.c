@@ -62,9 +62,9 @@ const char* built_in[] = {
 };
 void time_wrapper(int *sec, int *usec) {
   struct timeval t;
-  int ok = gettimeofday(&t, 0);
-  if (ok) {
-    printf("gettimeofday returned non-null (%d), aborting.\n", ok);
+  int err = gettimeofday(&t, 0);
+  if (err) {
+    printf("gettimeofday returned non-null (%d), aborting.\n", err);
     exit(1);
   }
   *sec = t.tv_sec;

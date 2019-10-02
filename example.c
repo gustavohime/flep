@@ -20,6 +20,9 @@
  */
 #include <ctype.h>
 #include <math.h>
+#ifndef M_PI
+#define M_PI (3.14159265358979323846264338327950288)
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -82,9 +85,9 @@ double native_eval##i(double* ab) { \
   return s; \
 } \
 double native_bench##i(volatile double* ab) { \
-  int s1, u1, s2, u2; \
+  int j, s1, u1, s2, u2; \
   time_wrapper(&s1, &u1); \
-  for (int j = 0; j < N_FOR_BENCH; j++) { \
+  for (j = 0; j < N_FOR_BENCH; j++) { \
     *pkeep += s; \
   } \
   time_wrapper(&s2, &u2); \
@@ -144,7 +147,8 @@ double compare(const struct FLEP* flep, double (*nat)(double*)) {
   int n = 0;
   for (a = 0.1; a <= 3.0; a += 0.2)
   for (b = 0.2; b <= 3.0; b += 0.2) {
-    double ab[2] = {a, b};
+    double ab[2];
+    ab[0] = a; ab[1] = b;
     n++;
     x = flep_eval(flep, ab);
     y = nat(ab);
@@ -154,15 +158,16 @@ double compare(const struct FLEP* flep, double (*nat)(double*)) {
 }
 
 double benchmark(const struct FLEP* flep, double (*nat)(volatile double*)) {
-  int s1, u1, s2, u2;
+  int i, s1, u1, s2, u2;
   double ab[2] = {1.1, 2.2}, time_flep, time_nat;
   volatile double *pab = ab;
-  for (int i = 0; i < N_DISCARD; i++) {
+
+  for (i = 0; i < N_DISCARD; i++) {
     *pkeep += flep_eval(flep, (double*)pab);
     {double x = ab[0]; ab[0] = ab[1]; ab[1] = x;}
   }
   time_wrapper(&s1, &u1);
-  for (int i = 0; i < N_FOR_BENCH; i++) {
+  for (i = 0; i < N_FOR_BENCH; i++) {
     *pkeep += flep_eval(flep, ab);
     {double x = ab[0]; ab[0] = ab[1]; ab[1] = x;}
   }
@@ -173,7 +178,12 @@ double benchmark(const struct FLEP* flep, double (*nat)(volatile double*)) {
 }
 
 int main(int argc, const char* argv[]) {
+  int i = 0, bad = 0, total = 0;
   FILE* infile = 0;
+  const char* exp = 0;
+#define BUFLEN 512
+  char buf[BUFLEN];
+
   if (argc > 1) {
     infile = fopen(argv[1], "rb");
     if (!infile) {
@@ -190,11 +200,6 @@ int main(int argc, const char* argv[]) {
 "Expressions will be evaluated %d times in benchmark\n\n",
       N_FOR_BENCH);
   }
-
-  int i = 0, bad = 0, total = 0;
-  const char* exp = 0;
-#define BUFLEN 512
-  char buf[BUFLEN];
   if (!infile) {
     printf(
   "Column A: relative error of FLEP to native implementation in %%\n"
@@ -210,9 +215,10 @@ int main(int argc, const char* argv[]) {
       while (!feof(infile)) {
 	exp = fgets(buf, BUFLEN, infile);
 	if (exp) {
+	  int n;
 	  while (isspace(*exp)) exp++;
 	  if (*exp == '#') continue;
-	  int n = strlen(exp);
+	  n = strlen(exp);
 	  if (!n) continue;
 	  if (exp[n-1] == '\n') buf[n-1] = 0;
 	  total++;
@@ -226,31 +232,34 @@ int main(int argc, const char* argv[]) {
       if (i == N_BUILT_IN) return 0;
       exp = built_in[i];
     }
-    int error, position;
-    const struct FLEP* flep;
-    flep = flep_parse(exp, &error, &position);
-    if (!flep) {
-      printf("FLEP failed to parse (%s)\n%s\n%*s\n", 
-	flep_translate(error), exp, position, "^");
-      bad++;
-      continue;
+    {
+      int error, position;
+      const struct FLEP* flep;
+      flep = flep_parse(exp, &error, &position);
+      if (!flep) {
+	printf("FLEP failed to parse (%s)\n%s\n%*s\n", 
+	  flep_translate(error), exp, position, "^");
+	bad++;
+	continue;
+      }
+      if (!infile) {
+	double ratio, percent_off = compare(flep, native_eval[i]);
+	printf(" %5.2f%% |", percent_off);
+	ratio = benchmark(flep, native_bench[i]);
+	printf(" %5.2f |", ratio);
+	printf(" %-s\n", exp);
+      } else {
+	printf("\"%s\"\n", exp);
+	/* Uncomment the line below to see the RPN representation */
+	/* flep_dump(flep); */
+      }
+      flep_free(flep);
     }
-    if (!infile) {
-      double percent_off = compare(flep, native_eval[i]);
-      printf(" %5.2f%% |", percent_off);
-      double ratio= benchmark(flep, native_bench[i]);
-      printf(" %5.2f |", ratio);
-      printf(" %-s\n", exp);
-    } else {
-      printf("\"%s\"\n", exp);
-      // Uncomment the line below to see the RPN representation
-      //flep_dump(flep);
-    }
-    flep_free(flep);
   }
   if (infile) {
     printf("Successfully parsed %d of %d expressions from \"%s\"\n",
       total -bad, total, argv[1]);
   }
+  return 0;
 }
 

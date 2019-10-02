@@ -22,6 +22,9 @@
  */
 #include <ctype.h>
 #include <math.h>
+#ifndef M_PI
+#define M_PI (3.14159265358979323846264338327950288)
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -297,7 +300,8 @@ static int flep_get_sum(struct FLEPTokens* tok, struct FLEP* out) {
 }
 /* helper for "flep_optimize" */
 static void flep_delete_text(struct FLEP* out, int i, int n) {
-  for (int j = i+n; j < out->nt; j++) {
+  int j;
+  for (j = i+n; j < out->nt; j++) {
     out->text[j-n] = out->text[j];
   }
   out->nt -= n;
@@ -305,7 +309,8 @@ static void flep_delete_text(struct FLEP* out, int i, int n) {
 
 /* Very basic compiled-expression optimization */
 static void flep_optimize(struct FLEP* out) {
-  for (int i = out->nt-2; i >= 0; i--) {
+  int i;
+  for (i = out->nt-2; i >= 0; i--) {
     if (out->text[i] == FLEP_UNARY_MINUS &&
 	out->text[i-1] == FLEP_UNARY_MINUS) {
       flep_delete_text(out, i-1, 2); /* remove 2 successive sign changes */
@@ -368,8 +373,8 @@ const struct FLEP* flep_parse(const char* s, int *error,
 
   struct FLEPTokens tok;
   int status;
-  flep_tokenize(&tok, s);
   struct FLEP* out = (struct FLEP*)malloc(sizeof(struct FLEP));
+  flep_tokenize(&tok, s);
   out->text = 0;
   out->data = 0;
   out->st = out->sd = 8;
@@ -429,8 +434,9 @@ void flep_free(const struct FLEP* f) {
 
 /* published pretty printer for compiled expression */
 void flep_dump(const struct FLEP* f) {
+  int i;
   printf("\n");
-  for (int i = 0; i < f->nt; i++) {
+  for (i = 0; i < f->nt; i++) {
     int op = f->text[i];
     switch(FLEP_OPCODE(op)) {
       case FLEP_CONST:

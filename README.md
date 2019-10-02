@@ -5,10 +5,10 @@ FLEP compiles a parenthesized mathematical expression stored in a string and
 then uses the compiled representation to evaluate it several times.
 Expressions can contain:
  - up to seven variables, designated by the letters "abcxyzw"
- - standard operations +, -, /, * plus ^ for power
+ - standard four operations `+`, `-`, `/`, `*`, plus `^` for power
  - balanced parentheses
- - functions "sin", "cos", "tan", "log", "exp" and "sqrt"
- - constants "e" and "pi"
+ - functions `sin`, `cos`, `tan`, `log`, `exp` and `sqrt`.
+ - constants `e` and `pi`.
 
 FLEP uses a recursive parser to generate a RPN representation, then
 runs it on a stack-based engine. FLEP's code is:
@@ -62,7 +62,7 @@ bugs. The following example is the PROPER USAGE, including error checking.
 
 ## Compiling and running the example
 
-The compilation is rather trivial, you need 'gcc' and 'make. Just run 'make'.
-You can then run 'example' without any arguments for a simplistic benchmark.
-Alternatively, you can run 'example [input.file]' to parse a list of expressions
-of your choice. A sample input file is provided - containing the same expressions hardcoded in example.c.
+The compilation is rather trivial, you need `gcc` and `make`. Just run `make`.
+You can then run `example` without any arguments for a simplistic benchmark.
+Alternatively, you can run `example [input.file]` to parse a list of expressions
+of your choice. A sample input file is provided - containing the same expressions hardcoded in [example.c](https://github.com/gustavohime/flep/blob/master/example.c).

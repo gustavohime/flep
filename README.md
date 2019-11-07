@@ -48,7 +48,7 @@ bugs. The following example is the PROPER USAGE, including error checking.
 
 ```C
   const char* exp = "a + b^(c/pi)"
-  int error, int position;
+  int error, position;
   const struct FLEP* f = flep_parse(exp, &error, &position);
   if (!f) { // failed to parse
     printf("Failed to parse at position %d (%s)\n",
